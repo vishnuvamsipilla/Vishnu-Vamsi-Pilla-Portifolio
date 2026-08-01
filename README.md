@@ -22,7 +22,7 @@ Everything configurable lives in **`lib/config.ts`**:
 | `github`    | ✅ `github.com/vishnuvamsipilla` — pin 3 repos with READMEs so the link pays off.                                                                                  |
 | `resume`    | ✅ `public/N_S_Vishnu_Vamsi_Resume.pdf` (the full-stack version).                                                                                                  |
 | `email`     | ✅ Set.                                                                                                                                                            |
-| `formspree` | ❌ **Still `YOUR_FORM_ID`.** Sign up at formspree.io, create a form, paste the ID — until then the contact form fails and falls back to showing the email address. |
+| `formspree` | ✅ Endpoint set. Confirm the first live submission actually lands in your inbox — Formspree needs a one-time email confirmation per domain. |
 
 Favicon is `app/icon.svg` — Next generates the `<link rel="icon">` from it. No
 `favicon.ico` needed.

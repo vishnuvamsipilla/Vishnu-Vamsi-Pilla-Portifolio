@@ -7,5 +7,5 @@ export const CONFIG = {
   linkedin: "https://linkedin.com/in/n-s-vishnu-vamsi-pilla-2a7347224",
   github: "https://github.com/vishnuvamsipilla",
   resume: "/N_S_Vishnu_Vamsi_Resume.pdf",
-  formspree: "https://formspree.io/f/xvzejznv", // <-- replace before the form works
+  formspree: "https://formspree.io/f/xvzejznv",
 };
