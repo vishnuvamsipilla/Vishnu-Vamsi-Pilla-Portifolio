@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s · Vishnu Vamsi",
   },
   description:
-    "Full Stack Developer with 4+ years in React, Next.js and Node. I own the drag-and-drop Builder and Storefront engine behind CommerceEdge at SellersCommerce. Open to roles and freelance work.",
+    "Full Stack Developer with 4+ years in React, Next.js and Node. SDE-1 at SellersCommerce, owning the Builder and Storefront modules of CommerceEdge. Open to roles and freelance work.",
   keywords: [
     "Full Stack Developer",
     "React Developer",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     siteName: "N S Vishnu Vamsi Pilla",
     title: "N S Vishnu Vamsi Pilla — Full Stack Developer",
     description:
-      "I build the tools other people build websites with. React, Next.js, Node — and the Builder + Storefront modules behind CommerceEdge.",
+      "I build the tools other people build websites with. React, Next.js, Node — and the Builder + Storefront modules of CommerceEdge at SellersCommerce.",
     locale: "en_IN",
   },
   twitter: {

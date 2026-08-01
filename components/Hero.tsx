@@ -35,8 +35,8 @@ export default function Hero() {
           </h1>
 
           <p className="lede">
-            Full Stack Developer at SellersCommerce, where I own the drag-and-drop Builder and the
-            live Storefront engine behind CommerceEdge — a platform where admins design and publish
+            Full Stack Developer at SellersCommerce, where I own the Builder and Storefront modules
+            of CommerceEdge — the company&apos;s multi-tenant platform for designing and publishing
             full websites without writing code.
           </p>
 

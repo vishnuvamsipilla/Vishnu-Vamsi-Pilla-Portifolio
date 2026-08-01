@@ -6,22 +6,23 @@ export default function Work() {
       <div className="wrap">
         <div data-reveal>
           <div className="eyebrow">Selected work</div>
-          <h2 className="h2">The product I own</h2>
+          <h2 className="h2">The modules I own</h2>
           <p className="sub">
-            Two of the three pillars of a multi-tenant SaaS platform — the editor people build in,
-            and the storefront their customers shop on.
+            CommerceEdge is SellersCommerce&apos;s multi-tenant SaaS platform. I own two of its
+            three pillars — the editor people build in, and the storefront their customers shop on.
           </p>
         </div>
 
         <article className="feat" data-reveal data-d="1">
           <div className="feat-top">
-            <span className="chip chip-sig">SellersCommerce</span>
+            <span className="chip chip-sig">SellersCommerce product</span>
             <span className="chip">2024 — present</span>
-            <span className="chip">Multi-tenant SaaS</span>
+            <span className="chip">My modules: Builder + Storefront</span>
             <h3 className="feat-h">CommerceEdge</h3>
             <p className="txt" style={{ maxWidth: "64ch" }}>
               A CMS, a drag-and-drop page builder, and a live storefront rendering engine in one
-              platform. Admins design and publish full ecommerce sites without touching code.
+              platform. Admins design and publish full ecommerce sites without touching code. I work
+              on it as an SDE-1 on the platform team, owning the Builder and Storefront modules.
             </p>
           </div>
 
