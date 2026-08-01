@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Inter_Tight,
+  JetBrains_Mono,
+} from "next/font/google";
 import { CONFIG } from "@/lib/config";
 import "./globals.css";
 
@@ -56,7 +60,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "N S Vishnu Vamsi Pilla — Full Stack Developer",
-    description: "I build the tools other people build websites with. React, Next.js, Node.",
+    description:
+      "I build the tools other people build websites with. React, Next.js, Node.",
   },
   robots: {
     index: true,
@@ -78,13 +83,26 @@ const personJsonLd = {
     addressRegion: "Andhra Pradesh",
     addressCountry: "IN",
   },
-  knowsAbout: ["React.js", "Next.js", "Node.js", "Module Federation", "Web Performance"],
+  knowsAbout: [
+    "React.js",
+    "Next.js",
+    "Node.js",
+    "Module Federation",
+    "Web Performance",
+  ],
   sameAs: [CONFIG.linkedin, CONFIG.github],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+    >
       <body>
         <script
           type="application/ld+json"

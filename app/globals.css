@@ -357,10 +357,14 @@ textarea:focus-visible {
 .fld textarea:focus { outline: none; border-color: var(--sig); background: rgba(67,97,255,.07); }
 .fld select { appearance: none; cursor: pointer; }
 .fld select option { background: var(--panel); color: var(--bone); }
+.fld input[aria-invalid="true"],
+.fld textarea[aria-invalid="true"] { border-color: rgba(255,107,122,.55); }
 .ferr {
   font-size: 13px; color: var(--bad); background: rgba(255,107,122,.08);
   border: 1px solid rgba(255,107,122,.25); border-radius: 9px; padding: 10px 13px; line-height: 1.5;
 }
+/* inline field errors sit under their input — no box, just the text */
+.fld .ferr { background: none; border: none; padding: 0; font-size: 12.5px; }
 .fsub { margin-top: 2px; width: 100%; text-align: center; }
 .sent { border: 1px solid rgba(61,220,151,.3); border-radius: 14px; padding: 40px 28px; text-align: center; background: rgba(61,220,151,.05); }
 .sent-ic {

@@ -5,6 +5,7 @@ import { CONFIG } from "@/lib/config";
 import { PROJECT_TYPES } from "@/lib/data";
 
 type State = "idle" | "sending" | "sent" | "error";
+type Field = "name" | "email" | "message";
 
 export default function ContactForm() {
   const [fields, setFields] = useState({
@@ -14,23 +15,37 @@ export default function ContactForm() {
     message: "",
   });
   const [state, setState] = useState<State>("idle");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<{ field: Field; text: string } | null>(null);
 
   const set =
     (key: keyof typeof fields) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setFields({ ...fields, [key]: e.target.value });
+      // clear the error as soon as they start fixing the field it belongs to
+      if (error?.field === key) setError(null);
+    };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fields.name.trim()) return setError("Add your name so I know who I'm replying to.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
-      return setError("That email address doesn't look right.");
-    if (fields.message.trim().length < 10)
-      return setError("Tell me a little more about the project.");
+    const fail = (field: Field, text: string) => {
+      setError({ field, text });
+      document.getElementById(`cf-${field}`)?.focus();
+    };
 
-    setError("");
+    if (!fields.name.trim())
+      return fail("name", "Add your name so I know who I'm replying to.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
+      return fail("email", "That email address doesn't look right.");
+    if (fields.message.trim().length < 10)
+      return fail(
+        "message",
+        `A line or two about what you're building — ${10 - fields.message.trim().length} more character${
+          10 - fields.message.trim().length === 1 ? "" : "s"
+        } to go.`
+      );
+
+    setError(null);
     setState("sending");
 
     try {
@@ -63,7 +78,18 @@ export default function ContactForm() {
       <div className="frow">
         <div className="fld">
           <label htmlFor="cf-name">Name</label>
-          <input id="cf-name" name="name" value={fields.name} onChange={set("name")} placeholder="Your name" />
+          <input
+            id="cf-name"
+            name="name"
+            value={fields.name}
+            onChange={set("name")}
+            placeholder="Your name"
+            aria-invalid={error?.field === "name" || undefined}
+            aria-describedby={error?.field === "name" ? "cf-name-err" : undefined}
+          />
+          {error?.field === "name" && (
+            <p className="ferr" id="cf-name-err" role="alert">{error.text}</p>
+          )}
         </div>
         <div className="fld">
           <label htmlFor="cf-email">Email</label>
@@ -74,7 +100,12 @@ export default function ContactForm() {
             value={fields.email}
             onChange={set("email")}
             placeholder="you@company.com"
+            aria-invalid={error?.field === "email" || undefined}
+            aria-describedby={error?.field === "email" ? "cf-email-err" : undefined}
           />
+          {error?.field === "email" && (
+            <p className="ferr" id="cf-email-err" role="alert">{error.text}</p>
+          )}
         </div>
       </div>
 
@@ -88,18 +119,22 @@ export default function ContactForm() {
       </div>
 
       <div className="fld">
-        <label htmlFor="cf-msg">Message</label>
+        <label htmlFor="cf-message">Message</label>
         <textarea
-          id="cf-msg"
+          id="cf-message"
           name="message"
           rows={4}
           value={fields.message}
           onChange={set("message")}
           placeholder="A couple of lines about what you're building and the timeline."
+          aria-invalid={error?.field === "message" || undefined}
+          aria-describedby={error?.field === "message" ? "cf-message-err" : undefined}
         />
+        {error?.field === "message" && (
+          <p className="ferr" id="cf-message-err" role="alert">{error.text}</p>
+        )}
       </div>
 
-      {error && <p className="ferr" role="alert">{error}</p>}
       {state === "error" && (
         <p className="ferr" role="alert">
           That didn&apos;t send. Email me directly at {CONFIG.email} and I&apos;ll pick it up.

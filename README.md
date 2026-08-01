@@ -16,12 +16,12 @@ Open http://localhost:3000
 
 Everything configurable lives in **`lib/config.ts`**:
 
-| Field       | Status |
-|-------------|--------|
-| `siteUrl`   | ✅ `https://vishnu-vamsi-pilla-portifolio.vercel.app` — change if Vercel assigns a different URL or you add a custom domain. |
-| `github`    | ✅ `github.com/vishnuvamsipilla` — pin 3 repos with READMEs so the link pays off. |
-| `resume`    | ✅ `public/N_S_Vishnu_Vamsi_Resume.pdf` (the full-stack version). |
-| `email`     | ✅ Set. |
+| Field       | Status                                                                                                                                                             |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `siteUrl`   | ✅ `https://vishnu-vamsi-pilla.vercel.app` — change if Vercel assigns a different URL or you add a custom domain.                                                  |
+| `github`    | ✅ `github.com/vishnuvamsipilla` — pin 3 repos with READMEs so the link pays off.                                                                                  |
+| `resume`    | ✅ `public/N_S_Vishnu_Vamsi_Resume.pdf` (the full-stack version).                                                                                                  |
+| `email`     | ✅ Set.                                                                                                                                                            |
 | `formspree` | ❌ **Still `YOUR_FORM_ID`.** Sign up at formspree.io, create a form, paste the ID — until then the contact form fails and falls back to showing the email address. |
 
 Favicon is `app/icon.svg` — Next generates the `<link rel="icon">` from it. No
