@@ -18,7 +18,7 @@ Everything configurable lives in **`lib/config.ts`**:
 
 | Field       | Status                                                                                                                                                             |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `siteUrl`   | ✅ `https://vishnu-vamsi-pilla.vercel.app` — change if Vercel assigns a different URL or you add a custom domain.                                                  |
+| `siteUrl`   | ✅ `https://vishnu-vamsi-pilla-portifolio.vercel.app` — change if Vercel assigns a different URL or you add a custom domain.                                                  |
 | `github`    | ✅ `github.com/vishnuvamsipilla` — pin 3 repos with READMEs so the link pays off.                                                                                  |
 | `resume`    | ✅ `public/N_S_Vishnu_Vamsi_Resume.pdf` (the full-stack version).                                                                                                  |
 | `email`     | ✅ Set.                                                                                                                                                            |
