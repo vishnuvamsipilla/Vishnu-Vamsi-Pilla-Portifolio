@@ -20,7 +20,17 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* clip on both html and body — body alone gets ignored on mobile Safari.
+   `clip` over `hidden` so neither becomes a scroll container. */
+html, body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
 
 body {
   margin: 0;
@@ -28,15 +38,31 @@ body {
   color: var(--bone);
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   position: relative;
+  overflow-wrap: break-word;
 }
 
 h1, h2, h3, p, ul { margin: 0; }
 
+img, svg, video { max-width: 100%; height: auto; }
+
 .mono { font-family: var(--font-mono), monospace; }
 
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+/* gutter scales with the viewport so no extra breakpoint is needed for padding */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 4vw, 28px); }
+
+/* grid/flex children default to min-width:auto and refuse to shrink below their
+   content — that is what pushes the page wider than the screen. */
+.hero-grid > *,
+.mock-body > *,
+.feat-cols > *,
+.ct-grid > *,
+.sk > *,
+.frow > *,
+.stats > *,
+.cards > *,
+.job-top > *,
+.byline > * { min-width: 0; }
 
 button:focus-visible,
 a:focus-visible,
@@ -50,9 +76,10 @@ textarea:focus-visible {
 /* ============================================================
    Ambient background
    ============================================================ */
+/* widths are viewport-capped so they can never extend past the right edge */
 .glow { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
-.glow-a { top: -180px; left: 8%; width: 620px; height: 420px; background: rgba(67,97,255,.20); }
-.glow-b { top: 340px; right: -120px; width: 480px; height: 380px; background: rgba(123,92,255,.13); }
+.glow-a { top: -180px; left: 8%; width: min(620px, 70vw); height: 420px; background: rgba(67,97,255,.20); }
+.glow-b { top: 340px; right: 0; width: min(480px, 60vw); height: 380px; background: rgba(123,92,255,.13); }
 
 .mesh {
   position: absolute; inset: 0 0 auto; height: 1100px; pointer-events: none; z-index: 0;
@@ -77,7 +104,10 @@ textarea:focus-visible {
   backdrop-filter: blur(14px);
   border-bottom-color: var(--rule);
 }
-.nav-in { max-width: 1180px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 20px; }
+.nav-in {
+  max-width: 1180px; margin: 0 auto; padding: 14px clamp(18px, 4vw, 28px);
+  display: flex; align-items: center; gap: 20px;
+}
 .brand { font-family: var(--font-display), sans-serif; font-weight: 800; font-size: 15px; letter-spacing: -.02em; }
 .brand b { color: var(--sig); }
 .nav-links { display: flex; gap: 4px; margin-left: auto; }
@@ -92,6 +122,22 @@ textarea:focus-visible {
   text-decoration: none; transition: border-color .2s, background .2s;
 }
 .nav-cta:hover { border-color: var(--sig); background: rgba(67,97,255,.12); }
+
+/* hamburger — only rendered as visible below the tablet breakpoint */
+.nav-tog {
+  display: none; width: 40px; height: 40px; padding: 0; flex: 0 0 auto;
+  align-items: center; justify-content: center; gap: 5px; flex-direction: column;
+  border: 1px solid var(--rule); border-radius: 10px; background: rgba(255,255,255,.03);
+  cursor: pointer; transition: border-color .2s, background .2s;
+}
+.nav-tog:hover { border-color: var(--sig); }
+.nav-tog span {
+  display: block; width: 17px; height: 1.5px; border-radius: 2px; background: var(--bone);
+  transition: transform .25s ease, opacity .2s ease;
+}
+.nav-tog[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-tog[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-tog[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 /* ============================================================
    Hero
@@ -150,7 +196,10 @@ textarea:focus-visible {
 }
 .mock-bar { display: flex; align-items: center; gap: 7px; padding: 12px 14px; border-bottom: 1px solid var(--rule); background: var(--panel); }
 .tl { width: 9px; height: 9px; border-radius: 50%; background: var(--rule); }
-.mock-title { margin-left: 8px; font-size: 10.5px; color: var(--dim); letter-spacing: .06em; }
+.mock-title {
+  margin-left: 8px; font-size: 10.5px; color: var(--dim); letter-spacing: .06em;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 .mock-body { display: grid; grid-template-columns: 44px 1fr 92px; height: 290px; }
 .mock-side { border-right: 1px solid var(--rule); padding: 12px 0; display: flex; flex-direction: column; align-items: center; gap: 9px; background: var(--panel); }
 .tool { width: 22px; height: 22px; border-radius: 6px; background: var(--rule); }
@@ -381,21 +430,125 @@ textarea:focus-visible {
 
 /* ============================================================
    Responsive
+   Breakpoints: 1180 laptop · 1024 tablet landscape · 900 tablet
+                portrait / mobile nav · 700 large phone · 520 phone · 380 small
    ============================================================ */
-@media (max-width: 940px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-  .stats { grid-template-columns: repeat(2, 1fr); margin-top: 0; }
+
+/* --- laptop / small desktop --------------------------------- */
+@media (max-width: 1180px) {
+  .hero-grid { gap: 40px; }
+  .ct-grid { gap: 34px; padding: 40px 34px; }
+  .feat-cols { gap: 24px; }
+}
+
+/* --- tablet landscape --------------------------------------- */
+@media (max-width: 1024px) {
+  .hero { padding: 128px 0 78px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 42px; }
+  .lede { max-width: 60ch; }
+  /* mock is no longer a narrow column — cap it so it doesn't dominate */
+  .mock { max-width: 640px; }
+  .stats { grid-template-columns: repeat(4, 1fr); margin-top: 0; }
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .sk { grid-template-columns: 160px 1fr; gap: 18px; }
+  .ct-grid { grid-template-columns: 1fr; }
+  .ct-s { max-width: 60ch; }
+  .sec { padding: 80px 0; }
+}
+
+/* --- tablet portrait — nav collapses to a menu --------------- */
+@media (max-width: 900px) {
+  .nav-tog { display: flex; }
+  .nav-links {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 2px; margin: 0; padding: 8px 18px 16px;
+    background: rgba(7,7,11,.97); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links button { width: 100%; text-align: left; padding: 13px 12px; font-size: 15px; }
+  .nav-cta { margin-left: auto; }
+
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .feat-cols { grid-template-columns: 1fr; }
+  .glow-a { width: min(420px, 70vw); height: 300px; }
+  .glow-b { width: min(320px, 60vw); height: 260px; }
+}
+
+/* --- large phone -------------------------------------------- */
+@media (max-width: 700px) {
+  .hero { padding: 112px 0 64px; }
+  .sec { padding: 64px 0; }
   .cards { grid-template-columns: 1fr; }
-  .feat-cols { grid-template-columns: 1fr; gap: 24px; padding: 22px 24px 28px; }
-  .feat-top { padding: 26px 24px 0; }
-  .feat-foot { padding: 16px 24px; }
-  .sk { grid-template-columns: 1fr; gap: 12px; }
-  .nav-links { display: none; }
-  .hero { padding: 116px 0 70px; }
-  .sec { padding: 70px 0; }
-  .ct-grid { grid-template-columns: 1fr; gap: 34px; padding: 32px 22px; }
+  .sk { grid-template-columns: 1fr; gap: 12px; padding: 20px 0; }
   .frow { grid-template-columns: 1fr; }
   .job-p { margin-left: 0; width: 100%; }
+
+  .feat { border-radius: 16px; }
+  .feat-top { padding: 26px 22px 0; }
+  .feat-cols { gap: 22px; padding: 22px 22px 26px; }
+  .feat-foot { padding: 16px 22px; }
+  .feat-h { font-size: clamp(1.35rem, 5vw, 1.9rem); }
+
+  .ct { border-radius: 18px; }
+  .ct-grid { gap: 30px; padding: 30px 22px; }
+
+  .tl-wrap { padding-left: 22px; }
+  .job::before { left: -28px; }
+
+  /* squeeze the builder mock so its three columns still read */
+  .mock-body { grid-template-columns: 38px 1fr 78px; height: 250px; }
+  .mock-canvas { padding: 13px; }
+}
+
+/* --- phone --------------------------------------------------- */
+@media (max-width: 520px) {
+  .hero { padding: 100px 0 52px; }
+  .sec { padding: 54px 0; }
+  .h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .lede { font-size: 15.5px; margin-top: 20px; }
+  .sub { font-size: 15.5px; }
+  .txt { font-size: 15px; }
+
+  /* full-width CTAs — easier tap targets */
+  .cta { gap: 10px; }
+  .cta .btn { width: 100%; text-align: center; }
+
+  .stat { padding: 18px 16px; }
+  .stat-n { font-size: 27px; }
+  .stat-l { font-size: 12.5px; }
+
+  .card { padding: 20px 18px; }
+  .card-n { font-size: 19px; }
+
+  .byline { gap: 11px; }
+  .by-r { font-size: 12px; }
+
+  /* inspector panel is decorative — drop it rather than crush it */
+  .mock-body { grid-template-columns: 34px 1fr; height: 210px; }
+  .mock-insp { display: none; }
+  .mock-cap { font-size: 9.5px; padding: 10px 12px; }
+
+  .ct-links { gap: 14px; }
+  .ftr { flex-direction: column; align-items: flex-start; gap: 8px; padding: 22px 0; }
+}
+
+/* --- small phone --------------------------------------------- */
+@media (max-width: 380px) {
+  .stats { grid-template-columns: 1fr; }
+  .brand { font-size: 14px; }
+  .nav-cta { font-size: 12px; padding: 8px 12px; }
+  .badge { font-size: 11.5px; padding: 6px 12px; }
+  .chip { font-size: 10.5px; }
+}
+
+/* --- coarse pointers: no hover-lift, larger hit areas --------- */
+@media (hover: none) {
+  .btn:hover,
+  .card:hover,
+  .stat:hover,
+  .tag:hover { transform: none; }
+  .nav-links button { min-height: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
